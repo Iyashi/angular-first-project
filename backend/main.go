@@ -1,51 +1,30 @@
 package main
 
 import (
-	"encoding/json"
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"time"
+
+	"github.com/gorilla/mux"
 )
-
-var (
-	port = os.Getenv("FRONTEND_PORT")
-)
-
-func init() {
-	flag.StringVar(&port, "port", port, "Port to run on")
-	flag.Parse()
-}
-
-type User struct {
-	ID       uint
-	PreName  string
-	LastName string
-}
 
 func main() {
-	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, World!"))
-	})
+	developmentMode = true // set development mode to true
 
-	http.HandleFunc("/work", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Start work..."))
-		time.Sleep(10 * time.Second)
-		w.Write([]byte("Finished work!"))
-	})
+	// create the router and apply routes
+	router := mux.NewRouter()
+	router.Path("/hello").Methods(http.MethodGet).HandlerFunc(handleHello)
+	router.Path("/work").Methods(http.MethodGet).HandlerFunc(handleWork)
+	router.Path("/user/{id:[0-9]+}").Methods(http.MethodGet).HandlerFunc(handleGetUser)
+	router.Path("/users").Methods(http.MethodGet).HandlerFunc(handleGetUserList)
 
-	http.HandleFunc("/data", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(User{1, "John", "Doe"}); err != nil {
-			http.Error(w, "Error encoding JSON", http.StatusInternalServerError)
-			return
-		}
-	})
+	// apply cors middleware to all routes to allow cross-origin requests from frontend to backend
+	handler := CORSMiddleware(router)
 
-	listenAddr := fmt.Sprintf(":%v", port)
-	if err := http.ListenAndServe(listenAddr, nil); err != nil {
+	// start the http server
+	listenAddr := fmt.Sprintf(":%v", backendPort)
+	log.Printf("Listening on %s...\n", listenAddr)
+	if err := http.ListenAndServe(listenAddr, handler); err != nil {
 		log.Fatalf("Could not listen on %s: %v\n", listenAddr, err)
 	}
 }
