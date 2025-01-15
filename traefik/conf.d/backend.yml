@@ -1,0 +1,13 @@
+http:
+  routers:
+    backend:
+      service: backend@file
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{ env "BACKEND_DOMAIN" }}`)
+  services:
+    backend:
+      loadbalancer:
+        servers:
+          - url: http://backend:{{ env "BACKEND_PORT" }}

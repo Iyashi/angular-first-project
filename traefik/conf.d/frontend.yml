@@ -1,0 +1,13 @@
+http:
+  routers:
+    frontend:
+      service: frontend@file
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{ env "FRONTEND_DOMAIN" }}`)
+  services:
+    frontend:
+      loadbalancer:
+        servers:
+          - url: http://frontend:{{ env "FRONTEND_PORT" }}
