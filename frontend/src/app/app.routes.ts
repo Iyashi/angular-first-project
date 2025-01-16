@@ -6,6 +6,7 @@ import { DefaultLayout } from './layouts/default.layout';
 
 // Pages
 import { HomePage } from './pages/home.page';
+import { UsersPage } from './pages/users.page';
 
 export const routes: Routes = [
   { // root page redirect to home page
@@ -25,6 +26,9 @@ export const routes: Routes = [
   { // other pages using default layout
     path: '',
     component: DefaultLayout,
+    children: [
+      { path: 'users', component: UsersPage },
+    ],
   },
 
   // { path: '**', component: PageNotFoundComponent }
