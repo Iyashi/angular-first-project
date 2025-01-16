@@ -6,6 +6,7 @@ import { DefaultLayout } from './layouts/default.layout';
 
 // Pages
 import { HomePage } from './pages/home.page';
+import { UserPage } from './pages/user.page';
 import { UsersPage } from './pages/users.page';
 
 export const routes: Routes = [
@@ -27,6 +28,7 @@ export const routes: Routes = [
     path: '',
     component: DefaultLayout,
     children: [
+      { path: 'user/:user_id', component: UserPage },
       { path: 'users', component: UsersPage },
     ],
   },
