@@ -2,19 +2,3 @@
 
 /compose.override.yml
 /compose.override.yaml
-
-# ComfyUI local clone
-/ComfyUI
-
-# ComfyUI volumes
-/models
-/custom_nodes
-/input
-/output
-/user
-
-# My prompts
-/Models.md
-/Models.txt
-/Prompts.md
-/Prompts.txt
