@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 // Layouts
 import { HomeLayout } from './layouts/home.layout';
+import { DefaultLayout } from './layouts/default.layout';
 
 // Pages
 import { HomePage } from './pages/home.page';
@@ -19,6 +20,11 @@ export const routes: Routes = [
     children: [
       { path: '', component: HomePage }
     ]
+  },
+
+  { // other pages using default layout
+    path: '',
+    component: DefaultLayout,
   },
 
   // { path: '**', component: PageNotFoundComponent }
